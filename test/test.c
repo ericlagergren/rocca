@@ -69,17 +69,19 @@ static int test_vectors(void) {
         uint8_t key[ROCCA_KEY_SIZE];
         uint8_t nonce[ROCCA_NONCE_SIZE];
         uint8_t additional_data[32];
+        size_t additional_data_len;
         uint8_t plaintext[64];
         uint8_t ciphertext[64 + ROCCA_OVERHEAD];
     } vector;
 
     static const vector vectors[] = {
         {
-            .name            = "=== test vector #1===",
-            .key             = {0},
-            .nonce           = {0},
-            .additional_data = {0},
-            .plaintext       = {0},
+            .name                = "=== test vector #1===",
+            .key                 = {0},
+            .nonce               = {0},
+            .additional_data     = {0},
+            .additional_data_len = 32,
+            .plaintext           = {0},
             .ciphertext =
                 {
                     0x15, 0x89, 0x2f, 0x85, 0x55, 0xad, 0x2d, 0xb4, 0x74, 0x9b,
@@ -125,7 +127,8 @@ static int test_vectors(void) {
                     0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1,
                     0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1,
                 },
-            .plaintext = {0},
+            .additional_data_len = 32,
+            .plaintext           = {0},
             .ciphertext =
                 {
                     0xf9, 0x31, 0xa8, 0x73, 0x0b, 0x2e, 0x8a, 0x3a, 0xf3, 0x41,
@@ -173,7 +176,8 @@ static int test_vectors(void) {
                     0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef,
                     0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef,
                 },
-            .plaintext = {0},
+            .additional_data_len = 32,
+            .plaintext           = {0},
             .ciphertext =
                 {
                     0x26, 0x5b, 0x7e, 0x31, 0x41, 0x41, 0xfd, 0x14, 0x82, 0x35,
@@ -235,6 +239,7 @@ static int test_vectors(void) {
                     0x90,
                     0x91,
                 },
+            .additional_data_len = 18,
             .plaintext =
                 {
                     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
@@ -247,95 +252,14 @@ static int test_vectors(void) {
                 },
             .ciphertext =
                 {
-                    0x34,
-                    0x8b,
-                    0x6f,
-                    0x6e,
-                    0xfa,
-                    0xd8,
-                    0x07,
-                    0xd2,
-                    0x46,
-                    0xeb,
-                    0xf3,
-                    0x45,
-                    0xe7,
-                    0x30,
-                    0xd8,
-                    0x3e,
-                    0x59,
-                    0x63,
-                    0xbd,
-                    0x6d,
-                    0x29,
-                    0xee,
-                    0xdc,
-                    0x49,
-                    0xa1,
-                    0x35,
-                    0x40,
-                    0x54,
-                    0x5a,
-                    0xe2,
-                    0x32,
-                    0xa7,
-                    0x03,
-                    0x4e,
-                    0xd4,
-                    0xef,
-                    0x19,
-                    0x8a,
-                    0x1e,
-                    0xb1,
-                    0xf8,
-                    0xb1,
-                    0x16,
-                    0xa1,
-                    0x76,
-                    0x03,
-                    0x54,
-                    0xb7,
-                    0x72,
-                    0x60,
-                    0xd6,
-                    0xf2,
-                    0xcc,
-                    0xa4,
-                    0x6e,
-                    0xfc,
-                    0xad,
-                    0xfc,
-                    0x47,
-                    0x65,
-                    0xff,
-                    0xfe,
-                    0x9f,
-                    0x09,
-
-                    // This is the tag from the paper, but it
-                    // appears to be incorrect. Additionally,
-                    // this test vector seems to be commented out
-                    // in the paper.
-                    //
-                    // 0xa9, 0xf2, 0x06, 0x94, 0x56, 0x55, 0x9d, 0xe3,
-                    // 0xe6, 0x9d, 0x23, 0x3e, 0x15, 0x4b, 0xa0, 0x5e,
-                    0x6a,
-                    0x35,
-                    0xfa,
-                    0x81,
-                    0x8f,
-                    0xba,
-                    0x29,
-                    0xed,
-                    0x29,
-                    0xe4,
-                    0x38,
-                    0x82,
-                    0x01,
-                    0x48,
-                    0x94,
-                    0xc1,
-
+                    0x34, 0x8b, 0x6f, 0x6e, 0xfa, 0xd8, 0x07, 0xd2, 0x46, 0xeb,
+                    0xf3, 0x45, 0xe7, 0x30, 0xd8, 0x3e, 0x59, 0x63, 0xbd, 0x6d,
+                    0x29, 0xee, 0xdc, 0x49, 0xa1, 0x35, 0x40, 0x54, 0x5a, 0xe2,
+                    0x32, 0xa7, 0x03, 0x4e, 0xd4, 0xef, 0x19, 0x8a, 0x1e, 0xb1,
+                    0xf8, 0xb1, 0x16, 0xa1, 0x76, 0x03, 0x54, 0xb7, 0x72, 0x60,
+                    0xd6, 0xf2, 0xcc, 0xa4, 0x6e, 0xfc, 0xad, 0xfc, 0x47, 0x65,
+                    0xff, 0xfe, 0x9f, 0x09, 0xa9, 0xf2, 0x06, 0x94, 0x56, 0x55,
+                    0x9d, 0xe3, 0xe6, 0x9d, 0x23, 0x3e, 0x15, 0x4b, 0xa0, 0x5e,
                 },
         },
     };
@@ -348,7 +272,7 @@ static int test_vectors(void) {
         bool ok =
             rocca_seal(gotCt, sizeof(gotCt), v.key, sizeof(v.key), v.nonce,
                        sizeof(v.nonce), v.plaintext, sizeof(v.plaintext),
-                       v.additional_data, sizeof(v.additional_data));
+                       v.additional_data, v.additional_data_len);
         if (!ok) {
             fprintf(stderr, "%s: rocca_seal failed\n", v.name);
             return TEST_FAIL;
@@ -363,7 +287,7 @@ static int test_vectors(void) {
         uint8_t gotPt[sizeof(v.plaintext)] = {0};
         ok = rocca_open(gotPt, sizeof(gotPt), v.key, sizeof(v.key), v.nonce,
                         sizeof(v.nonce), v.ciphertext, sizeof(v.ciphertext),
-                        v.additional_data, sizeof(v.additional_data));
+                        v.additional_data, v.additional_data_len);
         if (!ok) {
             fprintf(stderr, "%s: rocca_open failed\n", v.name);
             return TEST_FAIL;
