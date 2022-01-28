@@ -5,6 +5,14 @@ A C imeplementation of the Rocca cipher from the paper
 
 ## Installation
 
+The public header files are in `include` and the source files are
+in `src`.
+
+There are two implementations:
+
+1. ARMv8 (NEON and the Cryptography Extension for AES)
+2. x86-64 (SSE3 and AES)
+
 ## Usage
 
 ```C

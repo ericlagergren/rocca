@@ -1,3 +1,3 @@
 .PHONY: test
 test: 
-	cd src/ && $(MAKE) test
+	cd test/ && $(MAKE) test
