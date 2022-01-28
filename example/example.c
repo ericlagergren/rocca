@@ -1,20 +1,10 @@
-# rocca
-
-A C imeplementation of the Rocca cipher from the paper
-*Rocca: An Efficient AES-based Encryption Scheme for Beyond 5G*.
-
-## Installation
-
-## Usage
-
-```C
 #include <errno.h>
 #include <stdint.h>     // uint8_t
 #include <stdio.h>      // printf
 #include <stdlib.h>     // size_t
 #include <sys/random.h> // getrandom(2) or getentropy(2)
 
-#include "rocca.h"
+#include "../include/rocca.h"
 
 // sys_rand_bytes reads up to |buf_len| cryptographically secure
 // random bytes into |buf|.
@@ -94,21 +84,3 @@ int main(void) {
     printf("plaintext: %s\n", output);
     return EXIT_SUCCESS;
 }
-```
-
-Since Rocca is brand-new and largely unreviewed, you probably
-want [AEGIS](https://github.com/ericlagergren/aegis) instead.
-
-## Security
-
-### Disclosure
-
-This project uses full disclosure. If you find a security bug in
-an implementation, please e-mail me or create a GitHub issue.
-
-### Disclaimer
-
-You should only use cryptography libraries that have been
-reviewed by cryptographers or cryptography engineers. While I am
-a cryptography engineer, I'm not your cryptography engineer, and
-I have not had this project reviewed by any other cryptographers.
